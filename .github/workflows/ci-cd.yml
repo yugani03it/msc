@@ -50,12 +50,12 @@ jobs:
     # Apply Kubernetes manifests
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f k8s-manifests/namespace.yaml
-        kubectl apply -f k8s-manifests/db-secrets.yaml
-        kubectl apply -f k8s-manifests/aggregator-configmap.yaml
+        kubectl apply -f k8s-manifests/namespace.yaml  -n healthsync
+        kubectl apply -f k8s-manifests/db-secrets.yaml -n healthsync
+        kubectl apply -f k8s-manifests/aggregator-configmap.yaml -n healthsync 
         for FILE in k8s-manifests/*.yaml; do
           if [[ $FILE != *namespace.yaml && $FILE != *db-secrets.yaml && $FILE != *aggregator-configmap.yaml ]]; then
-            kubectl apply -f $FILE
+            kubectl apply -f $FILE -n healthsync
           fi
         done
 
