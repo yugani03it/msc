@@ -5,8 +5,8 @@ from flask import Flask, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
-
-# Load configurations from environment variables
+#test Comment
+# Load configurations from environment variables 
 PATIENT_RECORD_URL = os.getenv('PATIENT_SERVICE_URL')
 APPOINTMENT_URL = os.getenv('APPOINTMENT_SERVICE_URL')
 
