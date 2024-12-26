@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appointment-service
+  namespace: healthsync
+  labels:
+    app: appointment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appointment
+  template:
+    metadata:
+      labels:
+        app: appointment
+    spec:
+      containers:
+      - name: appointment
+        image: yugani03it/app-schedule-service:latest
+        ports:
+        - containerPort: 5001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appointment-service
+  namespace: healthsync
+spec:
+  selector:
+    app: appointment
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5001
+  type: ClusterIP

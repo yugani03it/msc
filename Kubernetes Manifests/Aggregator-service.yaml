@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aggregator-service
+  namespace: healthsync
+  labels:
+    app: aggregator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aggregator
+  template:
+    metadata:
+      labels:
+        app: aggregator
+    spec:
+      containers:
+      - name: aggregator
+        image: yugani03it/aggr-service:latest
+        ports:
+        - containerPort: 8083
+        envFrom:
+        - configMapRef:
+            name: aggregator-config
+        - secretRef:
+            name: db-secrets
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aggregator-service
+  namespace: healthsync
+spec:
+  selector:
+    app: aggregator
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8083
+  type: ClusterIP
