@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: aggregator
-        image: yugani03it/aggr-service:latest
+        image: yugani03it/aggregator-service:latest
         ports:
         - containerPort: 8083
         envFrom:
