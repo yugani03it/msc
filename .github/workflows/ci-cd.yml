@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  AWS_REGION: ap-south-1
+  EKS_CLUSTER_NAME: yugani-msc
+  DOCKER_HUB_USERNAME: yugani03it
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to EKS
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    # Set up Docker
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+    # Build and Push Docker Images
+    - name: Build and Push Images
+      run: |
+        for SERVICE in patient-record-service appointment-service notification-service aggregator-service; do
+          docker build -t $DOCKER_HUB_USERNAME/$SERVICE:latest ./$SERVICE
+          docker push $DOCKER_HUB_USERNAME/$SERVICE:latest
+        done
+
+    # Set up AWS CLI and kubectl
+    - name: Configure AWS
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: $AWS_REGION
+
+    - name: Update kubeconfig for EKS
+      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+    # Apply Kubernetes manifests
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f k8s-manifests/namespace.yaml
+        kubectl apply -f k8s-manifests/db-secrets.yaml
+        kubectl apply -f k8s-manifests/aggregator-configmap.yaml
+        for FILE in k8s-manifests/*.yaml; do
+          if [[ $FILE != *namespace.yaml && $FILE != *db-secrets.yaml && $FILE != *aggregator-configmap.yaml ]]; then
+            kubectl apply -f $FILE
+          fi
+        done
+
+    # Verify Deployment
+    - name: Verify Deployments
+      run: kubectl get pods -n healthsync
