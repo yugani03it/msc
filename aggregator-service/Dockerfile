@@ -11,11 +11,11 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port the app runs on
-EXPOSE 8083
+EXPOSE 8085
 
 # Define environment variables
 ENV FLASK_ENV=production
-ENV PORT=8083
+ENV PORT=8085
 
 # Run the application
 CMD ["python", "app.py"]
