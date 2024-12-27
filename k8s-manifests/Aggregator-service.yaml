@@ -19,7 +19,7 @@ spec:
       - name: aggregator
         image: yugani03it/aggregator-service:latest
         ports:
-        - containerPort: 8083
+        - containerPort: 8085
         envFrom:
         - configMapRef:
             name: aggregator-config
@@ -38,5 +38,5 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 8083
+    targetPort: 8085
   type: ClusterIP
