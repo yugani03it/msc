@@ -18,4 +18,4 @@ ENV FLASK_ENV=production
 ENV PORT=5001
 
 # Run the application
-CMD ["python", "appointment-schedule-service.py"]
+CMD ["python", "app.py"]

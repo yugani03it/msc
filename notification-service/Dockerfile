@@ -18,4 +18,4 @@ ENV FLASK_ENV=production
 ENV PORT=5002
 
 # Run the application
-CMD ["python", "notification-service.py"]
+CMD ["python", "app.py"]

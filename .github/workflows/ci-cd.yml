@@ -1,5 +1,5 @@
 name: CI/CD Pipeline
-
+# Git hub action start on 
 on:
   push:
     branches:
@@ -7,11 +7,11 @@ on:
   pull_request:
     branches:
       - main
-
+# EKS Cluster details
 env:
   AWS_REGION: ap-south-1
-  EKS_CLUSTER_NAME: yugani-msc
-  DOCKER_HUB_USERNAME: yugani03it
+  EKS_CLUSTER_NAME: yugani-msc # destination
+  DOCKER_HUB_USERNAME: yugani03it # docker image source
 
 jobs:
   build-and-deploy:

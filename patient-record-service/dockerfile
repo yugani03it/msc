@@ -18,4 +18,4 @@ ENV FLASK_ENV=production
 ENV PORT=5000
 
 # Run the application
-CMD ["python", "patient-record-service.py"]
+CMD ["python", "app.py"]

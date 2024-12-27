@@ -18,4 +18,4 @@ ENV FLASK_ENV=production
 ENV PORT=8083
 
 # Run the application
-CMD ["python", "Aggregator-service.py"]
+CMD ["python", "app.py"]
