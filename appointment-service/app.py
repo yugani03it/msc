@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 appointments = {}
-
+#test comment
 @app.route('/appointments', methods=['POST'])
 def create_appointment():
     data = request.json
