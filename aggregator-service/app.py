@@ -55,7 +55,7 @@ def store_aggregated_data(data):
         """)
 
         # Insert aggregated data
-        # test comment
+        
         cursor.execute("""
             INSERT INTO aggregated_data (total_patients, total_appointments, timestamp)
             VALUES (%s, %s, %s);
